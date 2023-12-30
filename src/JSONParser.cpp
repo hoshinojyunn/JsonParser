@@ -1,7 +1,10 @@
 #include "JSONParser.h"
+#include "JSONObject.h"
 #include <charconv>
 #include <regex>
 #include <optional>
+#include <string_view>
+#include <variant>
 // #include <iostream>
 
 template<class T>
@@ -191,4 +194,15 @@ std::string JSONParser::beautify(std::string_view json){
     res.push_back('\n');
     res.push_back('}');
     return std::move(res);
+}
+
+JSONDict JSONParser::toJSONDict(std::string_view json){
+    auto [obj, _] = parse(json);
+    // 解析出JSONDict失败
+    if(!std::holds_alternative<JSONDictPtr>(obj.inner)){
+        return{};
+    }
+    auto dictPtr = std::get<JSONDictPtr>(obj.inner);
+    return std::move(*dictPtr);
+
 }

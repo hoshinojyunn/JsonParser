@@ -9,6 +9,7 @@ class JSONParser {
 public:
   std::pair<JSONObject, size_t> parse(std::string_view json);
   std::string beautify(std::string_view json);
+  JSONDict toJSONDict(std::string_view json);
 };
 
 #endif
